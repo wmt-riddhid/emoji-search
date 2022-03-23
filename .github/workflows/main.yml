@@ -60,9 +60,7 @@ jobs:
         NETLIFY_AUTH_TOKEN: ${{ secrets.MY_NETLIFY_AUTH_TOKEN }}
         NETLIFY_SITE_ID: ${{ secrets.DEV_NETLIFY_SITE_ID }}
         NETLIFY_DEPLOY_TO_PROD: true
-        steps:
-        - run: npm install -g netlify-cli
-        - run: netlify deploy --dir=build --prod
+      
 
 
   #  - name: deploy to gh-pages
