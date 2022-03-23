@@ -59,6 +59,8 @@ jobs:
       with:
         NETLIFY_AUTH_TOKEN: ${{ secrets.MY_NETLIFY_AUTH_TOKEN }}
         NETLIFY_SITE_ID: ${{ secrets.DEV_NETLIFY_SITE_ID }}
+        build_command: "echo hello" 
+        install_command: "echo hello"
         NETLIFY_DEPLOY_TO_PROD: true
       
 
