@@ -1,0 +1,74 @@
+name: emoji-search
+
+on:
+  push:
+    branches:
+     - master
+  
+  pull_request:
+    branches:
+      - master
+  
+
+jobs:
+
+  build:
+    name: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: chackout code
+      uses: actions/checkout@v2
+    
+    - name: install node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 17.7.1
+    
+    - name: install npm packages
+      run: npm ci
+
+    - name: build project
+      run: npm run build
+
+    - name: run tests
+      run: npm run test
+
+    - name: upload production
+      uses: actions/upload-artifact@v2
+      with:
+        name: production-file
+        path: ./build
+
+  deploy:
+    name: deploy
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+
+    steps:
+
+    - name: download articals
+      uses: actions/download-artifact@v2
+      with:
+        name: production-file
+        path: ./build
+
+    - name: Deploy to Netlify
+      uses: jsmrcaga/action-netlify-deploy@v1.1.0
+      with:
+        NETLIFY_AUTH_TOKEN: ${{ secrets.MY_NETLIFY_AUTH_TOKEN }}
+        NETLIFY_SITE_ID: ${{ secrets.DEV_NETLIFY_SITE_ID }}
+        build_command: "echo hello" 
+        install_command: "echo hello"
+        NETLIFY_DEPLOY_TO_PROD: true
+      
+
+
+  #  - name: deploy to gh-pages
+  #    uses: peaceiris/actions-gh-pages@v3
+  #    with: 
+  #      github_token: ${{ secrets.GITHUB_TOKEN }}
+  #      publish_dir: ./build
+
+   
