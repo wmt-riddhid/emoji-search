@@ -44,9 +44,6 @@ jobs:
     name: deploy
     needs: build
     runs-on: ubuntu-latest
-    steps:
-    - run: npm install -g netlify-cli
-    - run: netlify deploy --dir=build --prod
     if: github.ref == 'refs/heads/master'
 
     steps:
@@ -59,6 +56,10 @@ jobs:
 
     - name: Deploy to Netlify
       uses: jsmrcaga/action-netlify-deploy@v1.1.0
+
+    steps:
+    - run: npm install -g netlify-cli
+    - run: netlify deploy --dir=build --prod
       with:
         NETLIFY_AUTH_TOKEN: ${{ secrets.MY_NETLIFY_AUTH_TOKEN }}
         NETLIFY_SITE_ID: ${{ secrets.DEV_NETLIFY_SITE_ID }}
